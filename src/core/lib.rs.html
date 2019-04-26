@@ -86,9 +86,17 @@
 <span id="86">86</span>
 <span id="87">87</span>
 <span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">failure</span>::{<span class="ident">Error</span>, <span class="ident">Fail</span>};
-<span class="kw">use</span> <span class="ident">slog</span>::<span class="ident">Logger</span>;
+<span class="comment">// re-export for convenience.</span>
+<span class="kw">pub</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">slog</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">slog</span>::<span class="ident">Logger</span>;
+
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
 
@@ -103,22 +111,22 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Info</span> {
     <span class="doccomment">/// The challenge&#39;s title (80 characters or less).</span>
-    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">title</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>,
     <span class="doccomment">/// An extended description of the challenge.</span>
-    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The challenge&#39;s difficulty.</span>
     <span class="kw">pub</span> <span class="ident">difficulty</span>: <span class="ident">Difficulty</span>,
     <span class="doccomment">/// The challenge number.</span>
     <span class="kw">pub</span> <span class="ident">number</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// A URL which may be used to find the original challenge post.</span>
-    <span class="kw">pub</span> <span class="ident">link</span>: <span class="ident">String</span>,
+    <span class="kw">pub</span> <span class="ident">link</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">str</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// How hard a particular [`Challenge`] is.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Difficulty</span> {
     <span class="ident">Easy</span>,
-    <span class="ident">Medium</span>,
+    <span class="ident">Intermediate</span>,
     <span class="ident">Hard</span>,
 }
 
@@ -128,7 +136,7 @@
     <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">s</span> {
             <span class="string">&quot;easy&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Difficulty</span>::<span class="ident">Easy</span>),
-            <span class="string">&quot;medium&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Difficulty</span>::<span class="ident">Medium</span>),
+            <span class="string">&quot;intermediate&quot;</span> <span class="op">|</span> <span class="string">&quot;medium&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Difficulty</span>::<span class="ident">Intermediate</span>),
             <span class="string">&quot;hard&quot;</span> <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Difficulty</span>::<span class="ident">Hard</span>),
             <span class="ident">other</span> <span class="op">=&gt;</span> {
                 <span class="prelude-val">Err</span>(<span class="ident">failure</span>::<span class="macro">format_err</span><span class="macro">!</span>(<span class="string">&quot;Unknown difficulty, \&quot;{}\&quot;&quot;</span>, <span class="ident">other</span>))
@@ -141,7 +149,7 @@
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Difficulty</span>::<span class="ident">Easy</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;easy&quot;</span>),
-            <span class="ident">Difficulty</span>::<span class="ident">Medium</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;medium&quot;</span>),
+            <span class="ident">Difficulty</span>::<span class="ident">Intermediate</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;intermediate&quot;</span>),
             <span class="ident">Difficulty</span>::<span class="ident">Hard</span> <span class="op">=&gt;</span> <span class="macro">write</span><span class="macro">!</span>(<span class="ident">f</span>, <span class="string">&quot;hard&quot;</span>),
         }
     }

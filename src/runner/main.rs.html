@@ -48,6 +48,10 @@
 <span id="48">48</span>
 <span id="49">49</span>
 <span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">cmd</span>;
 <span class="kw">mod</span> <span class="ident">list</span>;
@@ -60,6 +64,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">Challenge</span>;
 <span class="kw">use</span> <span class="ident">easy_375</span>::<span class="ident">Easy375</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">intermediate_375</span>::<span class="ident">Intermediate375</span>;
 <span class="kw">use</span> <span class="ident">slog</span>::{<span class="ident">Drain</span>, <span class="ident">Level</span>, <span class="ident">Logger</span>};
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
 
@@ -82,7 +87,10 @@
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_challenges</span>() <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;&gt;</span> {
-    <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>())]
+    <span class="macro">vec</span><span class="macro">!</span>[
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>()),
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate375</span>::<span class="ident">default</span>()),
+    ]
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialize_logging</span>(<span class="ident">verbosity</span>: <span class="ident">u32</span>) <span class="op">-&gt;</span> <span class="ident">Logger</span> {

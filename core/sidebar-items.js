@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Difficulty","How hard a particular [`Challenge`] is."]],"fn":[["check_equal",""]],"struct":[["Info","Extra information about a challenge."]],"trait":[["Challenge",""]]});
+initSidebarItems({"enum":[["Difficulty","How hard a particular [`Challenge`] is."]],"fn":[["check_equal",""]],"struct":[["Error","The `Error` type, which can contain any failure."],["Info","Extra information about a challenge."],["Logger","Logging handle used to execute logging statements"]],"trait":[["Challenge",""]]});
