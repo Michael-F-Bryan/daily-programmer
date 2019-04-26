@@ -17,7 +17,7 @@ script:
 
 before_deploy:
   - cargo doc --all --verbose
-  - cd dashboard && cargo web build --release --verbose --output dist && cd ..
+  - cd dashboard && cargo web deploy --release --verbose --output dist && cd ..
   - mkdir -p public
   - cp -r target/doc public/crate-docs
   - cp -r dashboard/dist public/dashboard
