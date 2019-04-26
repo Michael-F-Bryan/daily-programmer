@@ -39,7 +39,7 @@ pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
         Box::new(Easy371::default()),
         Box::new(Easy374::default()),
         Box::new(Easy375::default()),
-        Box::new(Intermediate374::default()),
+        //Box::new(Intermediate374::default()),
         Box::new(Intermediate375::default()),
     ]
 }
