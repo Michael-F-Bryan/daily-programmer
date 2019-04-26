@@ -7,3 +7,6 @@ edition = "2018"
 [dependencies]
 core = { path = "../core" }
 itertools = "0.8.0"
+
+[lib]
+path = "lib.rs"
