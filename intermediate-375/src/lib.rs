@@ -1,4 +1,5 @@
 use core::{Challenge, Difficulty, Error, Info, Logger};
+use std::collections::VecDeque;
 use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
 use std::str::FromStr;
@@ -160,9 +161,11 @@ impl Game {
                 self.state[index] = Card::Removed;
                 if let Some(l) = self.left_of(index) {
                     *l = l.flipped();
+                    println!("Left of {} was flipped to {:?}", index, *l);
                 }
                 if let Some(r) = self.right_of(index) {
                     *r = r.flipped();
+                    println!("Right of {} was flipped to {:?}", index, *r);
                 }
                 Ok(())
             }
@@ -176,15 +179,22 @@ impl Game {
     }
 
     fn left_of(&mut self, ix: usize) -> Option<&mut Card> {
-        if ix == 0 {
-            None
+        if 0 < ix
+            && ix < self.state.len()
+            && self.state[ix - 1] != Card::Removed
+        {
+            Some(&mut self.state[ix - 1])
         } else {
-            self.state.get_mut(ix - 1)
+            None
         }
     }
 
     fn right_of(&mut self, ix: usize) -> Option<&mut Card> {
-        self.state.get_mut(ix + 1)
+        if ix + 1 < self.state.len() && self.state[ix + 1] != Card::Removed {
+            Some(&mut self.state[ix + 1])
+        } else {
+            None
+        }
     }
 }
 
@@ -219,6 +229,27 @@ impl FromStr for Game {
     }
 }
 
+pub fn solve(initial_state: &[Card]) -> Option<Vec<Remove>> {
+    let mut commands = VecDeque::new();
+    let mut next_card_higher = false;
+
+    for (i, card) in initial_state.into_iter().cloned().enumerate() {
+        if next_card_higher {
+            commands.push_back(Remove(i));
+        } else {
+            commands.push_front(Remove(i));
+        }
+
+        next_card_higher ^= card == Card::FaceUp;
+    }
+
+    if next_card_higher {
+        Some(commands.into())
+    } else {
+        None
+    }
+}
+
 /// An error due to an invalid move.
 #[derive(Debug, Copy, Clone, PartialEq, failure_derive::Fail)]
 pub enum InvalidMove {
@@ -248,7 +279,6 @@ impl Display for InvalidMove {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::collections::VecDeque;
 
     #[test]
     fn parse_from_string() {
@@ -271,11 +301,11 @@ mod tests {
     #[test]
     fn run_the_example() {
         let initial_state = "0100110";
-        let subsequent_states = [
+        let mut subsequent_states = vec![
             "1.10110", "..10110", "...1110", "....010", "....1.1", "......1",
             ".......",
         ];
-        let moves = [
+        let moves = vec![
             Remove(1),
             Remove(0),
             Remove(2),
@@ -285,19 +315,29 @@ mod tests {
             Remove(6),
         ];
 
-        let mut subsequent_states: VecDeque<_> =
-            subsequent_states.into_iter().collect();
-        let mut moves: VecDeque<_> = moves.into_iter().cloned().collect();
-
         let mut game = Game::from_str(initial_state).unwrap();
 
-        while !moves.is_empty() {
-            let next_move = moves.pop_front().unwrap();
-            game.execute(next_move).unwrap();
+        for (i, m) in moves.into_iter().enumerate() {
+            println!("Move {} = {:?}", i, m);
+            game.execute(m).unwrap();
 
-            let should_be = subsequent_states.pop_front().unwrap();
-            let should_be = Game::from_str(should_be).unwrap();
+            let should_be = Game::from_str(&subsequent_states[0]).unwrap();
             assert_eq!(game, should_be);
+            subsequent_states.remove(0);
+        }
+
+        assert!(game.is_won());
+    }
+
+    #[test]
+    fn solve_the_example() {
+        let initial_state = "0100110";
+        let mut game = Game::from_str(initial_state).unwrap();
+
+        let solution = solve(game.cards()).unwrap();
+
+        for step in solution {
+            game.execute(step).unwrap();
         }
 
         assert!(game.is_won());
