@@ -57,5 +57,31 @@ impl Challenge for Easy375 {
 }
 
 pub fn easy_375(n: u64) -> u64 {
-    unimplemented!()
+    if n < 10 {
+        return n + 1;
+    }
+
+    let digit = n % 10 + 1;
+    let rest = easy_375(n / 10) * 10;
+
+    if digit == 10 {
+        (rest + 1) * 10
+    } else {
+        rest + digit
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn known_values() {
+        let inputs = vec![(1, 2), (11, 22), (998, 10109)];
+
+        for (input, expected) in inputs {
+            let got = easy_375(input);
+            assert_eq!(got, expected);
+        }
+    }
 }
