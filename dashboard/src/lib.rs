@@ -85,7 +85,7 @@ impl<T: Component> Renderable<T> for ChallengePanel
                 format!("{} ({}/{})", info.title, info.number, info.difficulty);
 
             yew::html! {
-                <div class="card",>
+                <div class="card my-md-1",>
                     <h3 class="card-title",>{header}</h3>
                     <div class="card-body",>{render_markdown(&info.description)}</div>
                 </div>

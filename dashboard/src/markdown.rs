@@ -104,9 +104,11 @@ where
         Tag::Paragraph => VTag::new("p"),
         Tag::Rule => VTag::new("hr"),
         Tag::Header(n) => {
-            assert!(n > 0);
-            assert!(n < 7);
-            VTag::new(format!("h{}", n))
+            // Note: automatically increase all headers by 2
+            let level = n + 2;
+            assert!(level > 0);
+            assert!(level < 7);
+            VTag::new(format!("h{}", level))
         }
         Tag::BlockQuote => {
             let mut el = VTag::new("blockquote");

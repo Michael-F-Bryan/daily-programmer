@@ -12,7 +12,7 @@ install:
 script: 
   - cargo build --all --verbose --exclude dashboard
   - cargo test --all --verbose --exclude dashboard
-  - cargo web build --verbose
+  - cd dashboard && cargo web build --verbose && cd ..
   - cargo doc --all --verbose
 
 before_deploy:
