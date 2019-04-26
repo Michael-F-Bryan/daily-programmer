@@ -282,8 +282,8 @@
         <span class="ident">Tag</span>::<span class="ident">Paragraph</span> <span class="op">=&gt;</span> <span class="ident">VTag</span>::<span class="ident">new</span>(<span class="string">&quot;p&quot;</span>),
         <span class="ident">Tag</span>::<span class="ident">Rule</span> <span class="op">=&gt;</span> <span class="ident">VTag</span>::<span class="ident">new</span>(<span class="string">&quot;hr&quot;</span>),
         <span class="ident">Tag</span>::<span class="ident">Header</span>(<span class="ident">n</span>) <span class="op">=&gt;</span> {
-            <span class="comment">// Note: automatically increase all headers by 2</span>
-            <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">n</span> <span class="op">+</span> <span class="number">2</span>;
+            <span class="comment">// Note: automatically increase all headers by 3</span>
+            <span class="kw">let</span> <span class="ident">level</span> <span class="op">=</span> <span class="ident">n</span> <span class="op">+</span> <span class="number">3</span>;
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">level</span> <span class="op">&gt;</span> <span class="number">0</span>);
             <span class="macro">assert</span><span class="macro">!</span>(<span class="ident">level</span> <span class="op">&lt;</span> <span class="number">7</span>);
             <span class="ident">VTag</span>::<span class="ident">new</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;h{}&quot;</span>, <span class="ident">level</span>))

@@ -101,30 +101,67 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">Challenge</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">stdweb</span>;
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">yew</span>;
 
+<span class="kw">mod</span> <span class="ident">logger</span>;
 <span class="kw">mod</span> <span class="ident">markdown</span>;
 
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">logger</span>::<span class="ident">InMemoryDrain</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">markdown</span>::<span class="ident">render_markdown</span>;
 
+<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slog</span>::{<span class="self">self</span>, <span class="ident">Drain</span>, <span class="ident">Logger</span>};
 <span class="kw">use</span> <span class="ident">easy_374</span>::<span class="ident">Easy374</span>;
 <span class="kw">use</span> <span class="ident">easy_375</span>::<span class="ident">Easy375</span>;
 <span class="kw">use</span> <span class="ident">intermediate_374</span>::<span class="ident">Intermediate374</span>;
 <span class="kw">use</span> <span class="ident">intermediate_375</span>::<span class="ident">Intermediate375</span>;
+<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
 <span class="kw">use</span> <span class="ident">yew</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">yew</span>::<span class="ident">virtual_dom</span>::{<span class="ident">VList</span>, <span class="ident">VNode</span>};
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_challenges</span>() <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;&gt;</span> {
-<span class="macro">vec</span><span class="macro">!</span>[
-                <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy374</span>::<span class="ident">default</span>()),
-                <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>()),
-                <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate374</span>::<span class="ident">default</span>()),
-                <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate375</span>::<span class="ident">default</span>()),
-            ]
+    <span class="macro">vec</span><span class="macro">!</span>[
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy374</span>::<span class="ident">default</span>()),
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>()),
+        <span class="comment">//Box::new(Intermediate374::default()),</span>
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate375</span>::<span class="ident">default</span>()),
+    ]
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
@@ -165,11 +202,12 @@
     <span class="kw">fn</span> <span class="ident">view</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Html</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="macro">html</span><span class="macro">!</span> {
             <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;container&quot;</span>,<span class="op">&gt;</span>
-                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;row&quot;</span>,<span class="op">&gt;</span>
+                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;row my-md-2&quot;</span>,<span class="op">&gt;</span>
                     <span class="op">&lt;</span><span class="ident">h1</span><span class="op">&gt;</span>{<span class="string">&quot;Michael&#39;s Daily Programmer Challenges&quot;</span>}<span class="op">&lt;</span><span class="op">/</span><span class="ident">h1</span><span class="op">&gt;</span>
                 <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
-                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;row&quot;</span>,<span class="op">&gt;</span>
-                {<span class="self">self</span>.<span class="ident">challenge_cards</span>()}
+
+                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;accordian&quot;</span>, <span class="ident">id</span><span class="op">=</span><span class="string">&quot;accordian&quot;</span>,<span class="op">&gt;</span>
+                    {<span class="self">self</span>.<span class="ident">challenge_cards</span>()}
                 <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
             <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
         }
@@ -181,28 +219,56 @@
     <span class="ident">inner</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Component</span><span class="op">&gt;</span> <span class="ident">Renderable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ChallengePanel</span>
- {
-    <span class="kw">fn</span> <span class="ident">view</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Html</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">info</span>();
-            <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span>
-                <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} ({}/{})&quot;</span>, <span class="ident">info</span>.<span class="ident">title</span>, <span class="ident">info</span>.<span class="ident">number</span>, <span class="ident">info</span>.<span class="ident">difficulty</span>);
+<span class="kw">impl</span> <span class="ident">ChallengePanel</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">evaluate_output</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+        <span class="kw">let</span> <span class="ident">drain</span> <span class="op">=</span> <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">InMemoryDrain</span>::<span class="ident">default</span>());
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Logger</span>::<span class="ident">root</span>(<span class="ident">Arc</span>::<span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="ident">drain</span>).<span class="ident">fuse</span>(), <span class="ident">slog</span>::<span class="macro">o</span><span class="macro">!</span>());
 
-            <span class="ident">yew</span>::<span class="macro">html</span><span class="macro">!</span> {
-                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card my-md-1&quot;</span>,<span class="op">&gt;</span>
-                    <span class="op">&lt;</span><span class="ident">h3</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card-title&quot;</span>,<span class="op">&gt;</span>{<span class="ident">header</span>}<span class="op">&lt;</span><span class="op">/</span><span class="ident">h3</span><span class="op">&gt;</span>
-                    <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card-body&quot;</span>,<span class="op">&gt;</span>{<span class="ident">render_markdown</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">description</span>)}<span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
-                <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
-            }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">execute</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>) {
+            <span class="ident">slog</span>::<span class="macro">error</span><span class="macro">!</span>(<span class="ident">logger</span>, <span class="string">&quot;Evaluation failed&quot;</span>; <span class="string">&quot;error&quot;</span> <span class="op">=&gt;</span> <span class="ident">e</span>.<span class="ident">to_string</span>());
+        }
+
+        <span class="ident">drain</span>.<span class="ident">to_string</span>()
     }
 }
 
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Component</span><span class="op">&gt;</span> <span class="ident">Renderable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ChallengePanel</span> {
+    <span class="kw">fn</span> <span class="ident">view</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Html</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">info</span>();
+        <span class="kw">let</span> <span class="ident">header</span> <span class="op">=</span>
+            <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{} ({}/{})&quot;</span>, <span class="ident">info</span>.<span class="ident">title</span>, <span class="ident">info</span>.<span class="ident">number</span>, <span class="ident">info</span>.<span class="ident">difficulty</span>);
+
+        <span class="kw">let</span> <span class="ident">header_id</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;header-{}-{}&quot;</span>, <span class="ident">info</span>.<span class="ident">difficulty</span>, <span class="ident">info</span>.<span class="ident">number</span>);
+        <span class="kw">let</span> <span class="ident">target_id</span> <span class="op">=</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;body-{}-{}&quot;</span>, <span class="ident">info</span>.<span class="ident">difficulty</span>, <span class="ident">info</span>.<span class="ident">number</span>);
+
+        <span class="ident">yew</span>::<span class="macro">html</span><span class="macro">!</span> {
+                <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card&quot;</span>,<span class="op">&gt;</span>
+                    <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card-header&quot;</span>, <span class="ident">id</span><span class="op">=</span>{<span class="ident">header_id</span>},<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ident">h3</span><span class="op">&gt;</span>
+                            <span class="op">&lt;</span><span class="ident">button</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;btn btn-link&quot;</span>,
+                                    <span class="kw">type</span><span class="op">=</span><span class="string">&quot;button&quot;</span>,
+                                    <span class="ident">data</span><span class="op">-</span><span class="ident">toggle</span><span class="op">=</span><span class="string">&quot;collapse&quot;</span>,
+                                    <span class="ident">data</span><span class="op">-</span><span class="ident">target</span><span class="op">=</span>{<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;#{}&quot;</span>, <span class="ident">target_id</span>)},<span class="op">&gt;</span>
+                            {<span class="ident">header</span>}
+                            <span class="op">&lt;</span><span class="op">/</span><span class="ident">button</span><span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="op">/</span><span class="ident">h3</span><span class="op">&gt;</span>
+                    <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
+                    <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;collapse&quot;</span>, <span class="ident">id</span><span class="op">=</span>{<span class="ident">target_id</span>}, <span class="ident">data</span><span class="op">-</span><span class="ident">parent</span><span class="op">=</span><span class="string">&quot;#accordian&quot;</span>,<span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ident">div</span> <span class="ident">class</span><span class="op">=</span><span class="string">&quot;card-body&quot;</span>,<span class="op">&gt;</span>
+                        {<span class="ident">render_markdown</span>(<span class="kw-2">&amp;</span><span class="ident">info</span>.<span class="ident">description</span>)}
+                        <span class="op">&lt;</span><span class="ident">hr</span><span class="op">&gt;</span><span class="op">&lt;</span><span class="op">/</span><span class="ident">hr</span><span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ident">h3</span><span class="op">&gt;</span>{<span class="string">&quot;Challenge Output&quot;</span>}<span class="op">&lt;</span><span class="op">/</span><span class="ident">h3</span><span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="ident">pre</span><span class="op">&gt;</span><span class="op">&lt;</span><span class="ident">code</span><span class="op">&gt;</span>{{<span class="self">self</span>.<span class="ident">evaluate_output</span>()}}<span class="op">&lt;</span><span class="op">/</span><span class="ident">code</span><span class="op">&gt;</span><span class="op">&lt;</span><span class="op">/</span><span class="ident">pre</span><span class="op">&gt;</span>
+                        <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
+                    <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
+                <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
+        }
+    }
+}
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;&gt;</span> <span class="kw">for</span> <span class="ident">ChallengePanel</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">ChallengePanel</span> {
-        <span class="ident">ChallengePanel</span> {
-            <span class="ident">inner</span>: <span class="ident">other</span>,
-        }
+        <span class="ident">ChallengePanel</span> { <span class="ident">inner</span>: <span class="ident">other</span> }
     }
 }
 </pre></div>
