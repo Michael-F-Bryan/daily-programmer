@@ -14,28 +14,28 @@ use intermediate_375::Intermediate375;
 use yew::prelude::*;
 use yew::virtual_dom::{VList, VNode};
 
+pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
+vec![
+                Box::new(Easy374::default()),
+                Box::new(Easy375::default()),
+                Box::new(Intermediate374::default()),
+                Box::new(Intermediate375::default()),
+            ]
+}
+
 #[derive(Debug, Clone)]
 pub enum Msg {}
 
 pub struct Model {
-    challenges: Vec<Box<dyn Challenge>>,
+    challenges: Vec<ChallengePanel>,
 }
 
 impl Model {
     pub fn challenge_cards(&self) -> VNode<Self> {
         let mut list = VList::new();
 
-        for challenge in &self.challenges {
-            let info = challenge.info();
-            let header =
-                format!("{} ({}/{})", info.title, info.number, info.difficulty);
-            let card = yew::html! {
-                <div class="card",>
-                    <h3 class="card-title",>{header}</h3>
-                    <div class="card-body",>{render_markdown(&info.description)}</div>
-                </div>
-            };
-            list.add_child(card.into());
+        for panel in &self.challenges {
+            list.add_child(panel.view());
         }
 
         list.into()
@@ -48,12 +48,7 @@ impl Component for Model {
 
     fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
         Model {
-            challenges: vec![
-                Box::new(Easy374::default()),
-                Box::new(Easy375::default()),
-                Box::new(Intermediate374::default()),
-                Box::new(Intermediate375::default()),
-            ],
+            challenges: all_challenges().into_iter().map(From::from).collect(),
         }
     }
 
@@ -77,6 +72,32 @@ impl Renderable<Model> for Model {
     }
 }
 
+/// A panel for displaying a information about a challenge or running it.
 pub struct ChallengePanel {
     inner: Box<dyn Challenge>,
+}
+
+impl<T: Component> Renderable<T> for ChallengePanel
+ {
+    fn view(&self) -> Html<T> {
+            let info = self.inner.info();
+            let header =
+                format!("{} ({}/{})", info.title, info.number, info.difficulty);
+
+            yew::html! {
+                <div class="card",>
+                    <h3 class="card-title",>{header}</h3>
+                    <div class="card-body",>{render_markdown(&info.description)}</div>
+                </div>
+            }
+    }
+}
+
+
+impl From<Box<dyn Challenge>> for ChallengePanel {
+    fn from(other: Box<dyn Challenge>) -> ChallengePanel {
+        ChallengePanel {
+            inner: other,
+        }
+    }
 }

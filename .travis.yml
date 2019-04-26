@@ -4,11 +4,10 @@ cache: cargo
 
 rust:
   - 1.34.0
-  - stable
 
 install:
   - export PATH=$PATH:~/.cargo/bin
-  - command -v cargo-web >/dev/null 2>&1 || cargo install cargo-web
+  - command -v cargo-web >/dev/null 2>&1 || cargo install cargo-web --debug
 
 script: 
   - cargo build --all --verbose --exclude dashboard
