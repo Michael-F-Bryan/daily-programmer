@@ -1,4 +1,6 @@
-use core::{Challenge, Difficulty, Error, Info, Logger};
+use core::{slog, Challenge, Difficulty, Error, Info, Logger};
+use itertools::Itertools;
+use std::fmt::{self, Display, Formatter};
 
 const TITLE: &str = "N queens validator";
 const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/ab9mn7/20181231_challenge_371_easy_n_queens_validator/?utm_source=share&utm_medium=web2x";
@@ -61,7 +63,31 @@ impl Challenge for Easy371 {
     }
 
     fn execute(&self, logger: &Logger) -> Result<(), Error> {
-        unimplemented!()
+        let inputs = [
+            [4, 2, 7, 3, 6, 8, 5, 1],
+            [2, 5, 7, 4, 1, 8, 6, 3],
+            [5, 3, 1, 4, 2, 8, 6, 3],
+            [5, 8, 2, 4, 7, 1, 3, 6],
+            [4, 3, 1, 8, 1, 3, 5, 2],
+        ];
+
+        for input in &inputs {
+            let got = qcheck(input);
+            let tiles = to_tiles(input).join(" ");
+
+            match got {
+                Outcome::Valid => {
+                    slog::info!(logger, "Solution is valid"; "solution" => &tiles)
+                }
+                Outcome::Conflict(left, right) => {
+                    slog::info!(logger, "Solution has one or more conflicts";
+                        "first-queen" => left.to_string(),
+                        "second-queen" => right.to_string());
+                }
+            }
+        }
+
+        Ok(())
     }
 }
 
@@ -76,5 +102,130 @@ impl Default for Easy371 {
                 number: 371,
             },
         }
+    }
+}
+
+fn to_tiles(locations: &[usize]) -> impl Iterator<Item = Tile> + '_ {
+    locations
+        .into_iter()
+        .cloned()
+        .enumerate()
+        .map(|(column, row)| Tile::new(row - 1, column))
+}
+
+pub fn qcheck(locations: &[usize]) -> Outcome {
+    qcheck_with_conflict(locations, conflicts)
+}
+
+fn qcheck_with_conflict<F>(locations: &[usize], has_conflicts: F) -> Outcome
+where
+    F: Fn(Tile, Tile) -> bool,
+{
+    let queens: Vec<_> = to_tiles(locations).collect();
+
+    for queen in &queens {
+        let other_queens = queens.iter().filter(|q| *q != queen);
+        for other_queen in other_queens {
+            if has_conflicts(*queen, *other_queen) {
+                return Outcome::Conflict(*queen, *other_queen);
+            }
+        }
+    }
+
+    Outcome::Valid
+}
+
+pub fn conflicts(a: Tile, b: Tile) -> bool {
+    conflicts_horizontally(a, b)
+        || conflicts_vertically(a, b)
+        || conflicts_diagonally(a, b)
+}
+
+fn conflicts_vertically(a: Tile, b: Tile) -> bool {
+    a.column == b.column
+}
+
+fn conflicts_horizontally(a: Tile, b: Tile) -> bool {
+    a.row == b.row
+}
+
+fn conflicts_diagonally(a: Tile, b: Tile) -> bool {
+    let delta_x = a.column as i32 - b.column as i32;
+    let delta_y = a.row as i32 - b.row as i32;
+
+    delta_x.abs() == delta_y.abs()
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum Outcome {
+    Valid,
+    Conflict(Tile, Tile),
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Tile {
+    pub row: usize,
+    pub column: usize,
+}
+
+impl Tile {
+    pub fn new(row: usize, column: usize) -> Tile {
+        Tile { row, column }
+    }
+
+    pub fn row_letter(&self) -> char {
+        let value = 'a' as usize + self.column;
+        debug_assert!(value < u8::max_value() as usize);
+        value as u8 as char
+    }
+}
+
+impl Display for Tile {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        write!(f, "{}{}", self.row_letter(), self.column)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn valid_solutions() {
+        let inputs = vec![[4, 2, 7, 3, 6, 8, 5, 1], [2, 5, 7, 4, 1, 8, 6, 3]];
+
+        for (i, input) in inputs.into_iter().enumerate() {
+            let got = qcheck(&input);
+            assert_eq!(got, Outcome::Valid, "at index {}", i);
+        }
+    }
+
+    #[test]
+    fn same_row() {
+        let input = [5, 3, 1, 4, 2, 8, 6, 3];
+        let should_be = Outcome::Conflict(Tile::new(2, 1), Tile::new(2, 7));
+
+        let got = qcheck_with_conflict(&input, conflicts_horizontally);
+
+        assert_eq!(got, should_be);
+    }
+
+    #[test]
+    fn diagonals() {
+        let input = [5, 8, 2, 4, 7, 1, 3, 6];
+        let should_be = Outcome::Conflict(Tile::new(7, 1), Tile::new(2, 6));
+
+        let got = qcheck_with_conflict(&input, conflicts_diagonally);
+
+        assert_eq!(got, should_be);
+    }
+
+    #[test]
+    fn many_issues() {
+        let input = [4, 3, 1, 8, 1, 3, 5, 2];
+
+        let got = qcheck(&input);
+
+        assert_ne!(got, Outcome::Valid);
     }
 }
