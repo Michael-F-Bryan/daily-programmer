@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Nothing","A representation of an empty data. Nothing stored. Nothing restored."]]});

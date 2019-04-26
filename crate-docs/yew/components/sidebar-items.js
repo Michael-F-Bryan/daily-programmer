@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["select","This module contains implementation of `Select` component. You can use it instead `<select>` tag, because the component helps you to track selected value in an original type. Example:"]]});

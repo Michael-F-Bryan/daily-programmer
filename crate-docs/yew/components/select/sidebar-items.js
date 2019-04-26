@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Msg","Internal message of the component."]],"struct":[["Props","Properties of `Select` component."],["Select","`Select` component."]]});

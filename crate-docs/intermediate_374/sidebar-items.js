@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["DESCRIPTION",""],["LINK",""],["TITLE",""]],"struct":[["Blob",""],["Board","The game board."],["Intermediate374",""]]});

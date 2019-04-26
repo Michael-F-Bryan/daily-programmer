@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["VNode","Bind virtual element to a DOM reference."]]});

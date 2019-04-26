@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Wrapper","A wrapper for a callback. Listener extracted from here when attached."]],"type":[["Event","And event type which keeps the returned type."]]});

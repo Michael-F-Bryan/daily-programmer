@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `yew` crate."><meta name="keywords" content="rust, rustlang, rust-lang, yew"><title>yew - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../dark.css"><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script src="../storage.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="shortcut icon" href="../favicon.ico"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../yew/index.html'><img src='../rust-logo.png' alt='logo' width='100'></a><p class='location'>Crate yew</p><div class="sidebar-elems"><a id='all-types' href='all.html'><p>See all yew's items</p></a><div class="block items"><ul><li><a href="#reexports">Re-exports</a></li><li><a href="#modules">Modules</a></li><li><a href="#macros">Macros</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'></p><script>window.sidebarCurrent = {name: 'yew', ty: 'mod', relpath: '../'};</script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class='fqn'><span class='out-of-band'><span id='render-detail'><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class='inner'>&#x2212;</span>]</a></span><a class='srclink' href='../src/yew/lib.rs.html#1-215' title='goto source code'>[src]</a></span><span class='in-band'>Crate <a class="mod" href=''>yew</a></span></h1><div class='docblock'><h1 id="yew-framework---api-documentation" class="section-header"><a href="#yew-framework---api-documentation">Yew Framework - API Documentation</a></h1>
+<p>Yew is a framework for web-client apps created with
+a modern Rust-to-Wasm compilation feature.
+This framework was highly inspired by
+<a href="http://elm-lang.org/">Elm</a> and <a href="https://reactjs.org/">React</a>.</p>
+<p>Minimal example:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="attribute">#[<span class="ident">macro_use</span>]</span>
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">yew</span>;
+<span class="kw">use</span> <span class="ident">yew</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
+
+<span class="kw">struct</span> <span class="ident">Model</span> {
+    <span class="ident">value</span>: <span class="ident">i64</span>,
+}
+
+<span class="kw">enum</span> <span class="ident">Msg</span> {
+    <span class="ident">DoIt</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Component</span> <span class="kw">for</span> <span class="ident">Model</span> {
+    <span class="kw">type</span> <span class="ident">Message</span> <span class="op">=</span> <span class="ident">Msg</span>;
+    <span class="kw">type</span> <span class="ident">Properties</span> <span class="op">=</span> ();
+    <span class="kw">fn</span> <span class="ident">create</span>(<span class="kw">_</span>: <span class="self">Self</span>::<span class="ident">Properties</span>, <span class="kw">_</span>: <span class="ident">ComponentLink</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="self">Self</span> {
+            <span class="ident">value</span>: <span class="number">0</span>,
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="self">Self</span>::<span class="ident">Message</span>) <span class="op">-&gt;</span> <span class="ident">ShouldRender</span> {
+        <span class="kw">match</span> <span class="ident">msg</span> {
+            <span class="ident">Msg</span>::<span class="ident">DoIt</span> <span class="op">=&gt;</span> <span class="self">self</span>.<span class="ident">value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">value</span> <span class="op">+</span> <span class="number">1</span>
+        }
+        <span class="bool-val">true</span>
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Renderable</span><span class="op">&lt;</span><span class="ident">Model</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Model</span> {
+    <span class="kw">fn</span> <span class="ident">view</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Html</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="macro">html</span><span class="macro">!</span> {
+            <span class="op">&lt;</span><span class="ident">div</span><span class="op">&gt;</span>
+               <span class="op">&lt;</span><span class="ident">button</span> <span class="ident">onclick</span><span class="op">=</span><span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Msg</span>::<span class="ident">DoIt</span>,<span class="op">&gt;</span>{ <span class="string">&quot;+1&quot;</span> }<span class="op">&lt;</span><span class="op">/</span><span class="ident">button</span><span class="op">&gt;</span>
+                <span class="op">&lt;</span><span class="ident">p</span><span class="op">&gt;</span>{ <span class="self">self</span>.<span class="ident">value</span> }<span class="op">&lt;</span><span class="op">/</span><span class="ident">p</span><span class="op">&gt;</span>
+            <span class="op">&lt;</span><span class="op">/</span><span class="ident">div</span><span class="op">&gt;</span>
+        }
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="ident">yew</span>::<span class="ident">initialize</span>();
+    <span class="ident">App</span>::<span class="op">&lt;</span><span class="ident">Model</span><span class="op">&gt;</span>::<span class="ident">new</span>().<span class="ident">mount_to_body</span>();
+    <span class="ident">yew</span>::<span class="ident">run_loop</span>();
+}</pre></div>
+</div><h2 id='reexports' class='section-header'><a href="#reexports">Re-exports</a></h2>
+<table><tr><td><code>pub use self::<a class="mod" href="../yew/prelude/index.html" title="mod yew::prelude">prelude</a>::*;</code></td></tr></table><h2 id='modules' class='section-header'><a href="#modules">Modules</a></h2>
+<table><tr class='module-item'><td><a class="mod" href="agent/index.html" title='yew::agent mod'>agent</a></td><td class='docblock-short'><p>This module contains types to support multi-threading in Yew.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="app/index.html" title='yew::app mod'>app</a></td><td class='docblock-short'><p>This module contains <code>App</code> sctruct which used to bootstrap
+a component in an isolated scope.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="callback/index.html" title='yew::callback mod'>callback</a></td><td class='docblock-short'><p>This module contains structs to interact with <code>Scope</code>s.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="components/index.html" title='yew::components mod'>components</a></td><td class='docblock-short'><p>This module contains useful components.
+At this moment it includes typed <code>Select</code> only.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="events/index.html" title='yew::events mod'>events</a></td><td class='docblock-short'><p>The module that contains all events available in the framework.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="format/index.html" title='yew::format mod'>format</a></td><td class='docblock-short'><p>Utility module to convert data to types and back by
+specific formats like: JSON, BSON, TOML, YAML, XML.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="html/index.html" title='yew::html mod'>html</a></td><td class='docblock-short'><p>The main module which contents aliases to necessary items
+to create a template and implement <code>update</code> and <code>view</code> functions.
+Also this module contains declaration of <code>Component</code> trait which used
+to create own UI-components.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="macros/index.html" title='yew::macros mod'>macros</a></td><td class='docblock-short'><p>This module contains macros which implements <code>html!</code> macro
+and JSX-like templates.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="prelude/index.html" title='yew::prelude mod'>prelude</a></td><td class='docblock-short'><p>The Yew Prelude</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="scheduler/index.html" title='yew::scheduler mod'>scheduler</a></td><td class='docblock-short'><p>This module contains a scheduler.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="services/index.html" title='yew::services mod'>services</a></td><td class='docblock-short'><p>This module is a container of servies to interact with the external resources.</p>
+</td></tr><tr class='module-item'><td><a class="mod" href="virtual_dom/index.html" title='yew::virtual_dom mod'>virtual_dom</a></td><td class='docblock-short'><p>This module contains the implementation of reactive virtual dom concept.</p>
+</td></tr></table><h2 id='macros' class='section-header'><a href="#macros">Macros</a></h2>
+<table><tr class='module-item'><td><a class="macro" href="macro.html.html" title='yew::html macro'>html</a></td><td class='docblock-short'><p>This macro implements JSX-like templates.</p>
+</td></tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table><tr class='module-item'><td><a class="fn" href="fn.initialize.html" title='yew::initialize fn'>initialize</a></td><td class='docblock-short'><p>Initializes yew framework. It should be called first.</p>
+</td></tr><tr class='module-item'><td><a class="fn" href="fn.run_loop.html" title='yew::run_loop fn'>run_loop</a></td><td class='docblock-short'><p>Starts event loop.</p>
+</td></tr><tr class='module-item'><td><a class="fn" href="fn.start_app.html" title='yew::start_app fn'>start_app</a></td><td class='docblock-short'><p>Starts an app mounted to a body of the document.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g., <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g., <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g., <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../";window.currentCrate = "yew";</script><script src="../aliases.js"></script><script src="../main.js"></script><script defer src="../search-index.js"></script></body></html>

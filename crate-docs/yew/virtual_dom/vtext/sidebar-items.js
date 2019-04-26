@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VText","A type for a virtual `TextNode` represenation."]]});

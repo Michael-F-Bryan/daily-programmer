@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Callback","Universal callback wrapper.  Use callbacks carefully, because it you call it from `update` loop of `Components` (even from JS) it will delay a message until next. Callbacks should be used from JS callbacks or `setTimeout` calls.  `Rc` wrapper used to make it clonable."]]});

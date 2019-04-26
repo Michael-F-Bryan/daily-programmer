@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VList","This struct represents a fragment of the Virtual DOM tree."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VTag","A type for a virtual Element representation."]]});

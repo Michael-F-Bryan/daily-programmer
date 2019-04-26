@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VComp","A virtual component."]],"trait":[["Transformer","Converts property and attach lazy components to it. This type holds context and components types to store an activatior which will be used later buring rendering state to attach component sender."]]});

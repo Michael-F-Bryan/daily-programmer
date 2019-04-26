@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Msg",""]],"fn":[["all_challenges",""],["render_markdown","Renders a string of Markdown to HTML with the default options (footnotes disabled, tables enabled)."]],"struct":[["ChallengePanel","A panel for displaying a information about a challenge or running it."],["Model",""]]});
