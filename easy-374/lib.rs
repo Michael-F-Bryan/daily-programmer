@@ -1,4 +1,5 @@
 use core::{Challenge, Difficulty, Error, Info, Logger};
+use smallvec::SmallVec;
 
 pub const TITLE: &str = "Additive Persistence";
 pub const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/akv6z4/20190128_challenge_374_easy_additive_persistence/?utm_source=share&utm_medium=web2x";
@@ -54,5 +55,90 @@ impl Challenge for Easy374 {
 
     fn execute(&self, _logger: &Logger) -> Result<(), Error> {
         unimplemented!()
+    }
+}
+
+/// Calculate a number's *additive persistence*.
+pub fn additive_persistence(mut n: u64) -> u64 {
+    let mut count = 0;
+    while n >= 10 {
+        n = sum_digits(n) as u64;
+        count += 1;
+    }
+
+    count
+}
+
+fn sum_digits<N: Number>(n: N) -> u16 {
+    digits(n).map(|n| n as u16).sum()
+}
+
+/// A digit buffer.
+pub type Buffer = SmallVec<[u8; 8]>;
+
+/// Get an iterator over the digits in a number.
+pub fn digits<N: Number>(n: N) -> impl Iterator<Item = u8> {
+    let mut buffer = Buffer::new();
+    n.digits_rec(&mut buffer);
+    buffer.into_iter()
+}
+
+/// A generic number.
+pub trait Number {
+    /// Push the digits of this number onto the buffer.
+    fn digits_rec(&self, buffer: &mut Buffer);
+}
+
+macro_rules! impl_number {
+    ($ty:ty) => {
+        impl $crate::Number for $ty {
+            fn digits_rec(&self, buffer: &mut Buffer) {
+                if *self >= 10 {
+                    (*self/10).digits_rec(buffer);
+                }
+
+                let digit = *self % 10;
+                buffer.push(digit as u8);
+            }
+        }
+    };
+    ( $( $ty:ty ),*) => {
+        $(
+            impl_number!($ty);
+        )*
+    }
+}
+
+impl_number!(u8, u16, u32, u64);
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example_values() {
+        let inputs = vec![(13, 1), (1234, 2), (9876, 2), (199, 3)];
+
+        for (input, should_be) in inputs {
+            let got = additive_persistence(input);
+
+            assert_eq!(got, should_be, "for {}", input);
+        }
+    }
+
+    #[test]
+    fn get_number_digits() {
+        let inputs: Vec<(u32, &[u8])> = vec![
+            (0, &[0]),
+            (10, &[1, 0]),
+            (111, &[1, 1, 1]),
+            (101010, &[1, 0, 1, 0, 1, 0]),
+        ];
+
+        for (input, should_be) in inputs {
+            let got: Vec<_> = digits(input).collect();
+
+            assert_eq!(got, should_be);
+        }
     }
 }

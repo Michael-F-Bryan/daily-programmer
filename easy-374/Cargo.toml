@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 core = { path = "../core" }
+smallvec = "0.6.9"
 
 [lib]
 path = "lib.rs"
