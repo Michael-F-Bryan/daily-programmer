@@ -1,3 +1,3 @@
 [workspace]
-members = ["core", "dashboard", "runner", "easy-374", "easy-375",
+members = ["core", "dashboard", "daily-programmer", "easy-374", "easy-375",
             "intermediate-374", "intermediate-375"]

@@ -4,7 +4,7 @@
 
 ([Challenges] | [API Docs])
 
-Solution to random challenges taken from the [/r/dailyprogrammer/][reddit]
+Solution to random challenges taken from the [r/dailyprogrammer][reddit]
 subreddit.
 
 ## Getting Started
@@ -20,17 +20,17 @@ Now you should be able to build everything and start the runner program,
 ```console
 $ cargo build --all --exclude dashboard
     Blocking waiting for file lock on build directory
-   Compiling runner v0.1.0 (/home/michael/Documents/daily-programmer/runner)
+   Compiling daily-programmer v0.1.0 (/home/michael/Documents/daily-programmer/daily-programmer)
     Finished dev [unoptimized + debuginfo] target(s) in 1.64s
-$ cargo run --bin runner -- -h
+$ cargo run --bin daily-programmer -- -h
     Finished dev [unoptimized + debuginfo] target(s) in 0.09s
-     Running `target/debug/runner -h`
-runner 0.1.0
+     Running `target/debug/daily-programmer -h`
+daily-programmer 0.1.0
 Michael Bryan <michaelfbryan@gmail.com>
-Solution to random challenges taken from the /r/dailyprogrammer/ subreddit
+Solution to random challenges taken from the r/dailyprogrammer subreddit
 
 USAGE:
-    runner [FLAGS] <SUBCOMMAND>
+    daily-programmer [FLAGS] <SUBCOMMAND>
 
 FLAGS:
     -h, --help       Prints help information
@@ -42,9 +42,9 @@ SUBCOMMANDS:
     list       List all known challenges
     run        Execute a challenge
     run-all    Run all the challenges
-$ cargo run --bin runner -- run -n 375 -d easy
+$ cargo run --bin daily-programmer -- run -n 375 -d easy
     Finished dev [unoptimized + debuginfo] target(s) in 0.10s
-     Running `target/debug/runner run -n 375 -d easy`
+     Running `target/debug/daily-programmer run -n 375 -d easy`
 title: Print a new number by adding one to each of its digit
  Apr 26 23:33:04.711 INFO Starting the challenge
  Apr 26 23:33:04.711 INFO Running the example, expected: 10109, input: 998
