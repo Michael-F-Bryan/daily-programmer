@@ -1,4 +1,5 @@
 use core::{Challenge, Difficulty, Error, Info, Logger};
+use std::iter::FromIterator;
 
 pub const TITLE: &str = "The Game of Blobs";
 pub const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/aldexk/20190130_challenge_374_intermediate_the_game_of/?utm_source=share&utm_medium=web2x";
@@ -123,5 +124,59 @@ impl Challenge for Intermediate374 {
 
     fn execute(&self, _logger: &Logger) -> Result<(), Error> {
         unimplemented!()
+    }
+}
+
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub struct Blob {
+    pub x: i32,
+    pub y: i32,
+    pub size: u32,
+}
+
+/// The game board.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Board {
+    blobs: Vec<Blob>,
+}
+
+impl Board {
+    pub fn new(blobs: Vec<Blob>) -> Board {
+        let mut b = Board { blobs };
+        b.normalize();
+        b
+    }
+
+    pub fn blobs(&self) -> &[Blob] {
+        &self.blobs
+    }
+
+    pub fn step(&mut self) {
+        self.move_blobs();
+        self.merge_blobs();
+    }
+
+    pub fn is_finished(&self) -> bool {
+        self.blobs.len() <= 1
+    }
+
+    fn move_blobs(&mut self) {
+        unimplemented!()
+    }
+
+    fn merge_blobs(&mut self) {
+        unimplemented!();
+    }
+
+    /// Sort the blobs by coordinate so blobs on the same tile will be next to
+    /// each other.
+    fn normalize(&mut self) {
+        self.blobs.sort_by_key(|blob| (blob.x, blob.y));
+    }
+}
+
+impl FromIterator<Blob> for Board {
+    fn from_iter<I: IntoIterator<Item = Blob>>(iter: I) -> Board {
+        Board::new(iter.into_iter().collect())
     }
 }

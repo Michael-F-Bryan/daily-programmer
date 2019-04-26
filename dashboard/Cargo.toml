@@ -1,0 +1,15 @@
+[package]
+name = "dashboard"
+version = "0.1.0"
+authors = ["Michael Bryan <michaelfbryan@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+stdweb = "0.4"
+core = { path = "../core" }
+yew = { git = "https://github.com/DenisKolodin/yew" }
+easy-374 = { path = "../easy-374" }
+easy-375 = { path = "../easy-375" }
+intermediate-374 = { path = "../intermediate-374" }
+intermediate-375 = { path = "../intermediate-375" }
+pulldown-cmark = "0.5.0"
