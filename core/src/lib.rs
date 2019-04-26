@@ -30,7 +30,7 @@ pub struct Info {
 }
 
 /// How hard a particular [`Challenge`] is.
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd)]
 pub enum Difficulty {
     Easy,
     Intermediate,

@@ -10,6 +10,7 @@ use core::Challenge;
 use easy_374::Easy374;
 use easy_375::Easy375;
 use failure::Error;
+use intermediate_374::Intermediate374;
 use intermediate_375::Intermediate375;
 use slog::{Drain, Level, Logger};
 use structopt::StructOpt;
@@ -34,9 +35,10 @@ pub fn main() -> Result<(), Error> {
 
 pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
     vec![
-        Box::new(Easy375::default()),
-        Box::new(Intermediate375::default()),
         Box::new(Easy374::default()),
+        Box::new(Easy375::default()),
+        Box::new(Intermediate374::default()),
+        Box::new(Intermediate375::default()),
     ]
 }
 
