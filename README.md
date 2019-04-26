@@ -1,5 +1,9 @@
 # Daily Programmer Challenges
 
+[![Build Status](https://travis-ci.com/Michael-F-Bryan/daily-programmer.svg?branch=master)](https://travis-ci.com/Michael-F-Bryan/daily-programmer)
+
+([API Docs])
+
 Solution to random challenges taken from the [/r/dailyprogrammer/][reddit]
 subreddit.
 
@@ -22,3 +26,4 @@ license, shall be dual licensed as above, without any additional terms or
 conditions.
 
 [reddit]: https://www.reddit.com/r/dailyprogrammer/
+[API Docs]: https://michael-f-bryan.github.io/daily-programmer
