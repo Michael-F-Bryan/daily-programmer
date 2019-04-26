@@ -7,6 +7,7 @@ pub use crate::list::list;
 pub use crate::run::{run_all, run_one};
 
 use core::Challenge;
+use easy_374::Easy374;
 use easy_375::Easy375;
 use failure::Error;
 use intermediate_375::Intermediate375;
@@ -35,6 +36,7 @@ pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
     vec![
         Box::new(Easy375::default()),
         Box::new(Intermediate375::default()),
+        Box::new(Easy374::default()),
     ]
 }
 

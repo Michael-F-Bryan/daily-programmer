@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 core = { path = "../core" }
+easy-374 = { path = "../easy-374" }
 easy-375 = { path = "../easy-375" }
 intermediate-375 = { path = "../intermediate-375" }
 slog-async = "2.3.0"

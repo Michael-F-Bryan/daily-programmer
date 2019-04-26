@@ -1,2 +1,2 @@
 [workspace]
-members = ["core", "runner", "easy-375", "intermediate-375"]
+members = ["core", "runner", "easy-374", "easy-375", "intermediate-375"]

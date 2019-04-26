@@ -148,6 +148,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "easy-374"
+version = "0.1.0"
+dependencies = [
+ "core 0.1.0",
+]
+
+[[package]]
 name = "easy-375"
 version = "0.1.0"
 dependencies = [
@@ -328,6 +335,7 @@ name = "runner"
 version = "0.1.0"
 dependencies = [
  "core 0.1.0",
+ "easy-374 0.1.0",
  "easy-375 0.1.0",
  "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "intermediate-375 0.1.0",
