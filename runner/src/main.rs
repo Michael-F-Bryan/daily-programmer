@@ -9,6 +9,7 @@ pub use crate::run::{run_all, run_one};
 use core::Challenge;
 use easy_375::Easy375;
 use failure::Error;
+use intermediate_375::Intermediate375;
 use slog::{Drain, Level, Logger};
 use structopt::StructOpt;
 
@@ -31,7 +32,10 @@ pub fn main() -> Result<(), Error> {
 }
 
 pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
-    vec![Box::new(Easy375::default())]
+    vec![
+        Box::new(Easy375::default()),
+        Box::new(Intermediate375::default()),
+    ]
 }
 
 pub fn initialize_logging(verbosity: u32) -> Logger {

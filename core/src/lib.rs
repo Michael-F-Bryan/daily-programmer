@@ -1,5 +1,9 @@
-use failure::{Error, Fail};
-use slog::Logger;
+// re-export for convenience.
+pub extern crate slog;
+pub use failure::Error;
+pub use slog::Logger;
+
+use std::borrow::Cow;
 use std::fmt::{self, Debug, Display, Formatter};
 use std::str::FromStr;
 
@@ -14,22 +18,22 @@ pub trait Challenge {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Info {
     /// The challenge's title (80 characters or less).
-    pub title: String,
+    pub title: Cow<'static, str>,
     /// An extended description of the challenge.
-    pub description: String,
+    pub description: Cow<'static, str>,
     /// The challenge's difficulty.
     pub difficulty: Difficulty,
     /// The challenge number.
     pub number: u32,
     /// A URL which may be used to find the original challenge post.
-    pub link: String,
+    pub link: Cow<'static, str>,
 }
 
 /// How hard a particular [`Challenge`] is.
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 pub enum Difficulty {
     Easy,
-    Medium,
+    Intermediate,
     Hard,
 }
 
@@ -39,7 +43,7 @@ impl FromStr for Difficulty {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             "easy" => Ok(Difficulty::Easy),
-            "medium" => Ok(Difficulty::Medium),
+            "intermediate" | "medium" => Ok(Difficulty::Intermediate),
             "hard" => Ok(Difficulty::Hard),
             other => {
                 Err(failure::format_err!("Unknown difficulty, \"{}\"", other))
@@ -52,7 +56,7 @@ impl Display for Difficulty {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         match self {
             Difficulty::Easy => write!(f, "easy"),
-            Difficulty::Medium => write!(f, "medium"),
+            Difficulty::Intermediate => write!(f, "intermediate"),
             Difficulty::Hard => write!(f, "hard"),
         }
     }

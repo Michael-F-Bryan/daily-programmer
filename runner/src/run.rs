@@ -48,7 +48,8 @@ pub fn run_all(
 }
 
 fn run(challenge: &dyn Challenge, logger: &Logger) -> Result<(), Error> {
-    slog::info!(logger, "Starting the challenge"; "title" => &challenge.info().title);
+    let info = challenge.info();
+    slog::info!(logger, "Starting the challenge"; "title" => &*info.title);
 
     let start = Instant::now();
     let result = challenge.execute(logger);

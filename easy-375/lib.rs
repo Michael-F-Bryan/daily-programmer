@@ -1,6 +1,4 @@
-use core::{Challenge, Difficulty, Info};
-use failure::Error;
-use slog::Logger;
+use core::{slog, Challenge, Difficulty, Error, Info, Logger};
 
 pub const TITLE: &str = "Print a new number by adding one to each of its digit";
 pub const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/aphavc/20190211_challenge_375_easy_print_a_new_number_by/?utm_source=share&utm_medium=web2x";
@@ -27,11 +25,11 @@ impl Default for Easy375 {
     fn default() -> Easy375 {
         Easy375 {
             info: Info {
-                title: String::from(TITLE),
+                title: TITLE.into(),
                 difficulty: Difficulty::Easy,
                 number: 375,
-                link: String::from(LINK),
-                description: String::from(DESCRIPTION),
+                link: LINK.into(),
+                description: DESCRIPTION.into(),
             },
         }
     }

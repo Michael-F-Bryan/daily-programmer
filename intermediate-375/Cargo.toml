@@ -1,11 +1,10 @@
 [package]
-name = "easy-375"
+name = "intermediate-375"
 version = "0.1.0"
 authors = ["Michael Bryan <michaelfbryan@gmail.com>"]
 edition = "2018"
 
 [dependencies]
 core = { path = "../core" }
-
-[lib]
-path = "lib.rs"
+failure = "0.1.5"
+failure_derive = "0.1.5"

@@ -33,6 +33,8 @@ fn verbose_list(challenges: &[Box<dyn Challenge>]) {
         {
             println!("{}{}", indent, line);
         }
+
+        println!();
     }
 }
 
