@@ -49,13 +49,14 @@ pub fn run_all(
 
 fn run(challenge: &dyn Challenge, logger: &Logger) -> Result<(), Error> {
     let info = challenge.info();
-    slog::info!(logger, "Starting the challenge"; "title" => &*info.title);
+    let logger = logger.new(slog::o!("title" => info.title.to_string()));
+    slog::info!(logger, "Starting the challenge");
 
     let start = Instant::now();
-    let result = challenge.execute(logger);
+    let result = challenge.execute(&logger);
     let duration = Instant::now() - start;
 
-    slog::debug!(logger, "Finished running the challenge"; 
+    slog::info!(logger, "Finished running the challenge"; 
         "duration" => format_args!("{:?}", duration));
 
     result

@@ -1,4 +1,4 @@
-use core::{Challenge, Difficulty, Error, Info, Logger};
+use core::{slog, Challenge, Difficulty, Error, Info, Logger};
 use std::collections::VecDeque;
 use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
@@ -108,7 +108,35 @@ impl Challenge for Intermediate375 {
     }
 
     fn execute(&self, logger: &Logger) -> Result<(), Error> {
-        unimplemented!()
+        let inputs = [
+            "0100110",
+            "01001100111",
+            "100001100101000",
+            "0100110",
+            "001011011101001001000",
+            "1010010101001011011001011101111",
+            "1101110110000001010111011100110",
+        ];
+
+        for input in &inputs[..] {
+            let game = Game::from_str(input)?;
+            match solve(game.cards()) {
+                Some(solution) => {
+                    let words = solution
+                        .into_iter()
+                        .map(|r| r.0.to_string())
+                        .collect::<Vec<_>>()
+                        .join(" ");
+
+                    slog::info!(logger, "Solved"; 
+                    "input" => input,
+                    "solution" => words);
+                }
+                None => slog::info!(logger, "No solution"; "input" => input),
+            }
+        }
+
+        Ok(())
     }
 }
 
