@@ -12,3 +12,4 @@ slog-term = "2.4.0"
 slog = "2.4.1"
 structopt = "0.2.15"
 textwrap = { version = "0.11.0", features = ["term_size"] }
+failure = "0.1.5"
