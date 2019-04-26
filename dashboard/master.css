@@ -14,3 +14,7 @@ pre {
     display: block;
     word-wrap: break-word;
 }
+
+.reddit-logo-btn:hover {
+    background-color: #ff4301;
+}
