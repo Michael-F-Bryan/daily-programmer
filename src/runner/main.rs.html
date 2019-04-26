@@ -54,6 +54,8 @@
 <span id="54">54</span>
 <span id="55">55</span>
 <span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">cmd</span>;
 <span class="kw">mod</span> <span class="ident">list</span>;
@@ -67,6 +69,7 @@
 <span class="kw">use</span> <span class="ident">easy_374</span>::<span class="ident">Easy374</span>;
 <span class="kw">use</span> <span class="ident">easy_375</span>::<span class="ident">Easy375</span>;
 <span class="kw">use</span> <span class="ident">failure</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">intermediate_374</span>::<span class="ident">Intermediate374</span>;
 <span class="kw">use</span> <span class="ident">intermediate_375</span>::<span class="ident">Intermediate375</span>;
 <span class="kw">use</span> <span class="ident">slog</span>::{<span class="ident">Drain</span>, <span class="ident">Level</span>, <span class="ident">Logger</span>};
 <span class="kw">use</span> <span class="ident">structopt</span>::<span class="ident">StructOpt</span>;
@@ -91,9 +94,10 @@
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all_challenges</span>() <span class="op">-&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Challenge</span><span class="op">&gt;&gt;</span> {
     <span class="macro">vec</span><span class="macro">!</span>[
-        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>()),
-        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate375</span>::<span class="ident">default</span>()),
         <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy374</span>::<span class="ident">default</span>()),
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Easy375</span>::<span class="ident">default</span>()),
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate374</span>::<span class="ident">default</span>()),
+        <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">Intermediate375</span>::<span class="ident">default</span>()),
     ]
 }
 

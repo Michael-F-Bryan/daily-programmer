@@ -15,6 +15,7 @@ ALIASES["easy_375"] = {};
 ALIASES["failure"] = {};
 ALIASES["failure_derive"] = {};
 ALIASES["heck"] = {};
+ALIASES["intermediate_374"] = {};
 ALIASES["intermediate_375"] = {};
 ALIASES["isatty"] = {};
 ALIASES["lazy_static"] = {};
