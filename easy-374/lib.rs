@@ -1,5 +1,6 @@
-use core::{Challenge, Difficulty, Error, Info, Logger};
+use core::{slog, Challenge, Difficulty, Error, Info, Logger};
 use smallvec::SmallVec;
+use std::iter::Sum;
 
 pub const TITLE: &str = "Additive Persistence";
 pub const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/akv6z4/20190128_challenge_374_easy_additive_persistence/?utm_source=share&utm_medium=web2x";
@@ -53,24 +54,42 @@ impl Challenge for Easy374 {
         &self.info
     }
 
-    fn execute(&self, _logger: &Logger) -> Result<(), Error> {
-        unimplemented!()
+    fn execute(&self, logger: &Logger) -> Result<(), Error> {
+        let numbers: Vec<u64> = vec![
+            13,
+            1234,
+            9876,
+            0,
+            10,
+            19,
+            199,
+            1234567890,
+            12345678901234567890,
+        ];
+
+        for number in numbers {
+            let ap = additive_persistence(number);
+            slog::info!(logger, ""; "number" => number, "additive-persistence" => ap);
+        }
+
+        Ok(())
     }
 }
 
 /// Calculate a number's *additive persistence*.
-pub fn additive_persistence(mut n: u64) -> u64 {
+pub fn additive_persistence<N: Number>(n: N) -> u32 {
     let mut count = 0;
-    while n >= 10 {
-        n = sum_digits(n) as u64;
+    let mut n = n;
+    while n.two_or_more_digits() {
+        n = sum_digits(n);
         count += 1;
     }
 
     count
 }
 
-fn sum_digits<N: Number>(n: N) -> u16 {
-    digits(n).map(|n| n as u16).sum()
+fn sum_digits<N: Number>(n: N) -> N {
+    digits(n).map(N::from_u8).sum()
 }
 
 /// A digit buffer.
@@ -83,22 +102,37 @@ pub fn digits<N: Number>(n: N) -> impl Iterator<Item = u8> {
     buffer.into_iter()
 }
 
-/// A generic number.
-pub trait Number {
+/// A generic number for the purposes of calculating *Additive Persistence*.
+pub trait Number: Sum {
     /// Push the digits of this number onto the buffer.
     fn digits_rec(&self, buffer: &mut Buffer);
+    /// Does this number have 2 or more digits?
+    fn two_or_more_digits(&self) -> bool;
+    fn from_u8(n: u8) -> Self;
 }
 
 macro_rules! impl_number {
     ($ty:ty) => {
         impl $crate::Number for $ty {
+            #[allow(unused_comparisons)]
             fn digits_rec(&self, buffer: &mut Buffer) {
+                debug_assert!(*self >= 0,
+                    "It doesn't make sense to find the digits in a negative number");
+
                 if *self >= 10 {
                     (*self/10).digits_rec(buffer);
                 }
 
                 let digit = *self % 10;
                 buffer.push(digit as u8);
+            }
+
+            fn two_or_more_digits(&self) -> bool {
+                *self >= 10
+            }
+
+            fn from_u8(n: u8) -> Self {
+                n as $ty
             }
         }
     };
@@ -117,7 +151,7 @@ mod tests {
 
     #[test]
     fn example_values() {
-        let inputs = vec![(13, 1), (1234, 2), (9876, 2), (199, 3)];
+        let inputs = vec![(13_u32, 1), (1234, 2), (9876, 2), (199, 3)];
 
         for (input, should_be) in inputs {
             let got = additive_persistence(input);
