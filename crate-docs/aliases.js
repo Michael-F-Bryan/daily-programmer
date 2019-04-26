@@ -13,6 +13,7 @@ ALIASES["cfg_if"] = {};
 ALIASES["chrono"] = {};
 ALIASES["clap"] = {};
 ALIASES["core"] = {};
+ALIASES["daily_programmer"] = {};
 ALIASES["dashboard"] = {};
 ALIASES["dirs"] = {};
 ALIASES["discard"] = {};
