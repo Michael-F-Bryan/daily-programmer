@@ -104,8 +104,8 @@ where
         Tag::Paragraph => VTag::new("p"),
         Tag::Rule => VTag::new("hr"),
         Tag::Header(n) => {
-            // Note: automatically increase all headers by 2
-            let level = n + 2;
+            // Note: automatically increase all headers by 3
+            let level = n + 3;
             assert!(level > 0);
             assert!(level < 7);
             VTag::new(format!("h{}", level))

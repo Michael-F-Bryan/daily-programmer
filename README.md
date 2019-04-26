@@ -19,11 +19,9 @@ Now you should be able to build everything and start the runner program,
 
 ```console
 $ cargo build --all --exclude dashboard
-cargo build --all --exclude dashboard
     Blocking waiting for file lock on build directory
    Compiling runner v0.1.0 (/home/michael/Documents/daily-programmer/runner)
     Finished dev [unoptimized + debuginfo] target(s) in 1.64s
-
 $ cargo run --bin runner -- -h
     Finished dev [unoptimized + debuginfo] target(s) in 0.09s
      Running `target/debug/runner -h`
@@ -44,7 +42,6 @@ SUBCOMMANDS:
     list       List all known challenges
     run        Execute a challenge
     run-all    Run all the challenges
-
 $ cargo run --bin runner -- run -n 375 -d easy
     Finished dev [unoptimized + debuginfo] target(s) in 0.10s
      Running `target/debug/runner run -n 375 -d easy`
@@ -55,8 +52,7 @@ title: Print a new number by adding one to each of its digit
 ```
 
 > **Note:** You need to `exclude` the `dashboard` project when compiling with
-> `--all`. The `dashboard` crate is built using `yew`, and will only compile
-> to WASM.
+> `--all`. The `dashboard` crate is only designed to compile as WASM.
 
 You'll need `cargo-web` To view the dashboard,
 
