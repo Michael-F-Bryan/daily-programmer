@@ -1,0 +1,14 @@
+[package]
+name = "runner"
+version = "0.1.0"
+authors = ["Michael Bryan <michaelfbryan@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+core = { path = "../core" }
+easy-375 = { path = "../easy-375" }
+slog-async = "2.3.0"
+slog-term = "2.4.0"
+slog = "2.4.1"
+structopt = "0.2.15"
+textwrap = { version = "0.11.0", features = ["term_size"] }
