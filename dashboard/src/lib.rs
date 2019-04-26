@@ -74,8 +74,8 @@ impl Component for Model {
 impl Renderable<Model> for Model {
     fn view(&self) -> Html<Self> {
         html! {
-            <div class="container",>
-                <div class="row my-md-2",>
+            <div class="container mb-md-2",>
+                <div class="row",>
                     <h1>{"Michael's Daily Programmer Challenges"}</h1>
                 </div>
 
