@@ -9,6 +9,14 @@ mod markdown;
 pub use crate::logger::InMemoryDrain;
 pub use crate::markdown::render_markdown;
 
+const INTRO: &str = "
+Solution to random challenges taken from the 
+[r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/) subreddit.
+
+Inspecting each challenge will automatically execute it in the browser and write
+all logged output to the *Challenge Output* section.
+";
+
 use core::slog::{self, Drain, Logger};
 use easy_371::Easy371;
 use easy_374::Easy374;
@@ -17,7 +25,7 @@ use intermediate_374::Intermediate374;
 use intermediate_375::Intermediate375;
 use std::sync::Arc;
 use yew::prelude::*;
-use yew::virtual_dom::{VList, VNode};
+use yew::virtual_dom::{VList, VNode, VTag};
 
 pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
     vec![
@@ -71,6 +79,8 @@ impl Renderable<Model> for Model {
                     <h1>{"Michael's Daily Programmer Challenges"}</h1>
                 </div>
 
+                <div class="row my-md-1",>{markdown::render_markdown(INTRO)}</div>
+
                 <div class="accordian", id="accordian",>
                     {self.challenge_cards()}
                 </div>
@@ -101,33 +111,46 @@ impl<T: Component> Renderable<T> for ChallengePanel {
     fn view(&self) -> Html<T> {
         let info = self.inner.info();
         let header =
-            format!("{} ({}/{})", info.title, info.number, info.difficulty);
+            format!("{} (#{}, {})", info.title, info.number, info.difficulty);
 
         let header_id = format!("header-{}-{}", info.difficulty, info.number);
         let target_id = format!("body-{}-{}", info.difficulty, info.number);
 
-        yew::html! {
-                <div class="card",>
-                    <div class="card-header", id={header_id},>
-                        <h3>
-                            <button class="btn btn-link",
-                                    type="button",
-                                    data-toggle="collapse",
-                                    data-target={format!("#{}", target_id)},>
-                            {header}
-                            </button>
-                        </h3>
+        let header = yew::html! {
+            <div class="card-header",
+                 id={header_id},
+                 data-toggle="collapse",
+                 data-target={format!("#{}", target_id)},>
+                 <div class="row",>
+                    <div class="col",>
+                        <h3>{header}</h3>
                     </div>
-                    <div class="collapse", id={target_id}, data-parent="#accordian",>
-                        <div class="card-body",>
-                        {render_markdown(&info.description)}
-                        <hr></hr>
-                        <h3>{"Challenge Output"}</h3>
-                        <pre><code>{{self.evaluate_output()}}</code></pre>
-                        </div>
+                    <div class="col-md-1",>
+                        <a class="btn btn-outline-danger btn-sm reddit-logo-btn ml-md-auto",
+                        href={info.link.to_string()},>
+                            <img src="reddit.png", width="24",></img>
+                        </a>
                     </div>
+                 </div>
+            </div>
+        };
+
+        let body = yew::html! {
+            <div class="collapse", id={target_id}, data-parent="#accordian",>
+                <div class="card-body",>
+                {render_markdown(&info.description)}
+                <hr></hr>
+                <h3>{"Challenge Output"}</h3>
+                <pre><code>{{self.evaluate_output()}}</code></pre>
                 </div>
-        }
+            </div>
+        };
+
+        let mut card = VTag::new("div");
+        card.add_class("card");
+        card.add_child(header);
+        card.add_child(body);
+        card.into()
     }
 }
 
