@@ -13,6 +13,7 @@ script:
   - cargo build --all --verbose --exclude dashboard
   - cargo test --all --verbose --exclude dashboard
   - cd dashboard && cargo web build --verbose && cd ..
+  - cd dashboard && cargo web build --release --verbose && cd ..
   - cargo doc --all --verbose
 
 before_deploy:
