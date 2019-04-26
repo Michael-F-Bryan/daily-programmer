@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Difficulty","How hard a particular [`Challenge`] is."]],"fn":[["check_equal",""]],"struct":[["Info","Extra information about a challenge."]],"trait":[["Challenge",""]]});
