@@ -10,6 +10,7 @@ pub use crate::logger::InMemoryDrain;
 pub use crate::markdown::render_markdown;
 
 use core::slog::{self, Drain, Logger};
+use easy_371::Easy371;
 use easy_374::Easy374;
 use easy_375::Easy375;
 use intermediate_374::Intermediate374;
@@ -20,6 +21,7 @@ use yew::virtual_dom::{VList, VNode};
 
 pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
     vec![
+        Box::new(Easy371::default()),
         Box::new(Easy374::default()),
         Box::new(Easy375::default()),
         //Box::new(Intermediate374::default()),

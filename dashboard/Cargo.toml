@@ -13,3 +13,4 @@ easy-375 = { path = "../easy-375" }
 intermediate-374 = { path = "../intermediate-374" }
 intermediate-375 = { path = "../intermediate-375" }
 pulldown-cmark = "0.5.0"
+easy-371 = { path = "../easy-371" }
