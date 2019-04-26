@@ -11,9 +11,10 @@ pub use crate::markdown::render_markdown;
 
 const INTRO: &str = "
 Solution to random challenges taken from the 
-[r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/) subreddit.
+[r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer/) subreddit written
+in Rust and compiled to *Web Assembly*.
 
-Inspecting each challenge will automatically execute it in the browser and write
+Inspecting a challenge will automatically execute it in the browser and write
 all logged output to the *Challenge Output* section.
 ";
 
