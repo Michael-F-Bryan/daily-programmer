@@ -1,4 +1,4 @@
-use core::{failure, Challenge, Difficulty, Error, Info, Logger};
+use core::{failure, slog, Challenge, Difficulty, Error, Info, Logger};
 use std::str::FromStr;
 
 const TITLE: &str = "UPC check digits";
@@ -72,8 +72,17 @@ impl Challenge for Easy370 {
         &self.info
     }
 
-    fn execute(&self, _logger: &Logger) -> Result<(), Error> {
-        Err(failure::err_msg("TODO: Implement this"))
+    fn execute(&self, logger: &Logger) -> Result<(), Error> {
+        let inputs =
+            &["04210000526", "03600029145", "12345678910", "00001234567"];
+
+        for input in inputs {
+            let check_digit = upc_check_digit(input)?;
+            slog::info!(logger, "Calculated check digit"; 
+                "digit" => check_digit, "input" => input);
+        }
+
+        Ok(())
     }
 }
 
