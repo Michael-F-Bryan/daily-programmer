@@ -135,6 +135,32 @@ pub struct Blob {
     pub size: u32,
 }
 
+impl Blob {
+    pub fn new(x: i32, y: i32, size: u32) -> Blob {
+        Blob { x, y, size }
+    }
+
+    pub fn distance_to(&self, x: i32, y: i32) -> u32 {
+        let dx = x - self.x;
+        let dy = y - self.y;
+        let manhattan_distance = dx.abs() + dy.abs();
+
+        manhattan_distance as u32
+    }
+}
+
+fn move_blob_towards(blob: &mut Blob, target: &Blob) {
+    let (x, y) = (-1..=1)
+        .flat_map(|dx| (-1..=1).map(move |dy| (dx, dy)))
+        .filter(|(dx, dy)| *dx != 0 && *dy != 0)
+        .map(|(dx, dy)| (blob.x + dx, blob.y + dy))
+        .min_by_key(|(x, y)| target.distance_to(*x, *y))
+        .unwrap();
+
+    blob.x = x;
+    blob.y = y;
+}
+
 /// The game board.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Board {
@@ -162,11 +188,37 @@ impl Board {
     }
 
     fn move_blobs(&mut self) {
-        unimplemented!()
+        for i in 0..self.blobs.len() {
+            if let Some(target) = self.closest_smaller_blob_to(self.blobs[i]) {
+                move_blob_towards(&mut self.blobs[i], &target);
+            }
+        }
+    }
+
+    fn closest_smaller_blob_to(&self, blob: Blob) -> Option<Blob> {
+        self.blobs
+            .iter()
+            .filter(|b| b.size < blob.size)
+            .min_by_key(|b| blob.distance_to(b.x, b.y))
+            .cloned()
     }
 
     fn merge_blobs(&mut self) {
-        unimplemented!();
+        self.blobs.sort_by_key(|b| (b.x, b.y));
+        let mut new_buffer = Vec::<Blob>::with_capacity(self.blobs.capacity());
+
+        for blob in &self.blobs {
+            if let Some(last_blob) = new_buffer.last_mut() {
+                if last_blob.x == blob.x && last_blob.y == blob.y {
+                    last_blob.size += blob.size;
+                    continue;
+                }
+            }
+
+            new_buffer.push(*blob);
+        }
+
+        self.blobs = new_buffer;
     }
 
     /// Sort the blobs by coordinate so blobs on the same tile will be next to
@@ -179,5 +231,46 @@ impl Board {
 impl FromIterator<Blob> for Board {
     fn from_iter<I: IntoIterator<Item = Blob>>(iter: I) -> Board {
         Board::new(iter.into_iter().collect())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    #[ignore]
+    fn step_through_a_game() {
+        // ```
+        // t = 0          t = 1            t = 2
+        // ..1             ..1              ..3
+        // ...             ..2              ...
+        // .2.             ...              ...
+        // ```
+        let blobs = vec![Blob::new(0, 2, 1), Blob::new(2, 1, 2)];
+        let mut board = Board::new(blobs);
+
+        board.step();
+
+        let new_positions = &[Blob::new(0, 2, 1), Blob::new(1, 2, 2)];
+        assert_eq!(board.blobs(), new_positions);
+
+        board.step();
+
+        let new_positions = &[Blob::new(0, 2, 3)];
+        assert_eq!(board.blobs(), new_positions);
+
+        assert!(board.is_finished());
+    }
+
+    #[test]
+    fn merge_two_blobs() {
+        let blobs = vec![Blob::new(0, 0, 1), Blob::new(0, 0, 2)];
+        let mut board = Board::new(blobs);
+
+        board.merge_blobs();
+
+        let should_be = vec![Blob::new(0, 0, 3)];
+        assert_eq!(should_be, board.blobs);
     }
 }
