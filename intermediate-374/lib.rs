@@ -1,4 +1,4 @@
-use core::{Challenge, Difficulty, Error, Info, Logger};
+use core::{slog, Challenge, Difficulty, Error, Info, Logger};
 use std::iter::FromIterator;
 
 pub const TITLE: &str = "The Game of Blobs";
@@ -122,8 +122,9 @@ impl Challenge for Intermediate374 {
         &self.info
     }
 
-    fn execute(&self, _logger: &Logger) -> Result<(), Error> {
-        unimplemented!()
+    fn execute(&self, logger: &Logger) -> Result<(), Error> {
+        slog::error!(logger, "TODO: Implement this");
+        Ok(())
     }
 }
 
