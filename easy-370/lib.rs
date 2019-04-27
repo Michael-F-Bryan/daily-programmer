@@ -1,4 +1,5 @@
 use core::{failure, Challenge, Difficulty, Error, Info, Logger};
+use std::str::FromStr;
 
 const TITLE: &str = "UPC check digits";
 const LINK: &str = "https://www.reddit.com/r/dailyprogrammer/comments/a72sdj/20181217_challenge_370_easy_upc_check_digits/?utm_source=share&utm_medium=web2x";
@@ -73,5 +74,80 @@ impl Challenge for Easy370 {
 
     fn execute(&self, _logger: &Logger) -> Result<(), Error> {
         Err(failure::err_msg("TODO: Implement this"))
+    }
+}
+
+pub fn upc_check_digit(digits: &str) -> Result<u8, Error> {
+    let d = Digits::from_str(digits)?;
+    Ok(d.calculate_check_digit())
+}
+
+pub struct Digits([u8; 11]);
+
+impl Digits {
+    pub fn new(digits: [u8; 11]) -> Digits {
+        assert!(
+            digits.iter().all(|digit| *digit < 10),
+            "All digits must be less than 10"
+        );
+
+        Digits(digits)
+    }
+
+    pub fn calculate_check_digit(&self) -> u8 {
+        unimplemented!()
+    }
+}
+
+impl FromStr for Digits {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let mut buffer = [0; 11];
+        let mut i = 0;
+
+        for (ix, c) in s.char_indices() {
+            if i >= buffer.len() {
+                return Err(failure::err_msg(
+                    "The input string should be exactly 11 characters",
+                ));
+            }
+
+            match c.to_digit(10) {
+                Some(digit) => buffer[i] = digit as u8,
+                None => {
+                    return Err(failure::format_err!(
+                        "Expected a digit at index {}, but found {}",
+                        ix,
+                        c
+                    ))
+                }
+            }
+
+            i += 1;
+        }
+
+        if i != buffer.len() {
+            return Err(failure::err_msg(
+                "The input string should be exactly 11 characters",
+            ));
+        }
+
+        Ok(Digits::new(buffer))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn example_inputs() {
+        let inputs = vec![("04210000526", 4)];
+
+        for (src, should_be) in inputs {
+            let got = upc_check_digit(src).unwrap();
+            assert_eq!(got, should_be);
+        }
     }
 }
