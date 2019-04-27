@@ -175,6 +175,7 @@ name = "daily-programmer"
 version = "0.1.0"
 dependencies = [
  "core 0.1.0",
+ "easy-370 0.1.0",
  "easy-371 0.1.0",
  "easy-374 0.1.0",
  "easy-375 0.1.0",
@@ -193,6 +194,7 @@ name = "dashboard"
 version = "0.1.0"
 dependencies = [
  "core 0.1.0",
+ "easy-370 0.1.0",
  "easy-371 0.1.0",
  "easy-374 0.1.0",
  "easy-375 0.1.0",
@@ -217,6 +219,13 @@ dependencies = [
 name = "discard"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "easy-370"
+version = "0.1.0"
+dependencies = [
+ "core 0.1.0",
+]
 
 [[package]]
 name = "easy-371"
@@ -314,7 +323,6 @@ name = "intermediate-375"
 version = "0.1.0"
 dependencies = [
  "core 0.1.0",
- "failure 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
  "failure_derive 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

@@ -1,5 +1,7 @@
 // re-export for convenience.
 pub extern crate slog;
+pub extern crate failure;
+
 pub use failure::Error;
 pub use slog::Logger;
 

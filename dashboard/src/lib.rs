@@ -19,6 +19,7 @@ all logged output to the *Challenge Output* section.
 ";
 
 use core::slog::{self, Drain, Logger};
+use easy_370::Easy370;
 use easy_371::Easy371;
 use easy_374::Easy374;
 use easy_375::Easy375;
@@ -30,6 +31,7 @@ use yew::virtual_dom::{VList, VNode, VTag};
 
 pub fn all_challenges() -> Vec<Box<dyn Challenge>> {
     vec![
+        Box::new(Easy370::default()),
         Box::new(Easy371::default()),
         Box::new(Easy374::default()),
         Box::new(Easy375::default()),

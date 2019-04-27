@@ -1,4 +1,4 @@
-use core::{slog, Challenge, Difficulty, Error, Info, Logger};
+use core::{failure, slog, Challenge, Difficulty, Error, Info, Logger};
 use std::collections::VecDeque;
 use std::fmt::{self, Display, Formatter};
 use std::iter::FromIterator;
