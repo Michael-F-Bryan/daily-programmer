@@ -17,6 +17,7 @@ ALIASES["daily_programmer"] = {};
 ALIASES["dashboard"] = {};
 ALIASES["dirs"] = {};
 ALIASES["discard"] = {};
+ALIASES["easy_370"] = {};
 ALIASES["easy_371"] = {};
 ALIASES["easy_374"] = {};
 ALIASES["easy_375"] = {};

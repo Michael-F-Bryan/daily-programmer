@@ -17,6 +17,7 @@ sourcesIndex["daily_programmer"] = {"name":"","dirs":[],"files":["cmd.rs","list.
 sourcesIndex["dashboard"] = {"name":"","dirs":[],"files":["lib.rs","logger.rs","markdown.rs"]};
 sourcesIndex["dirs"] = {"name":"","dirs":[],"files":["lib.rs","lin.rs","unix.rs"]};
 sourcesIndex["discard"] = {"name":"","dirs":[],"files":["lib.rs"]};
+sourcesIndex["easy_370"] = {"name":"","dirs":[],"files":["lib.rs"]};
 sourcesIndex["easy_371"] = {"name":"","dirs":[],"files":["lib.rs"]};
 sourcesIndex["easy_374"] = {"name":"","dirs":[],"files":["lib.rs"]};
 sourcesIndex["easy_375"] = {"name":"","dirs":[],"files":["lib.rs"]};
