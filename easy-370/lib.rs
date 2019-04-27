@@ -95,7 +95,38 @@ impl Digits {
     }
 
     pub fn calculate_check_digit(&self) -> u8 {
-        unimplemented!()
+        let sum = self.odd_sum() * 3 + self.even_sum();
+        let m = sum % 10;
+
+        if m == 0 {
+            0
+        } else {
+            10 - m
+        }
+    }
+
+    fn even_sum(&self) -> u8 {
+        let mut even_sum = 0;
+
+        let mut i = 1;
+        while i < self.0.len() {
+            even_sum += self.0[i];
+            i += 2;
+        }
+
+        even_sum
+    }
+
+    fn odd_sum(&self) -> u8 {
+        let mut odd_sum = 0;
+
+        let mut i = 0;
+        while i < self.0.len() {
+            odd_sum += self.0[i];
+            i += 2;
+        }
+
+        odd_sum
     }
 }
 
